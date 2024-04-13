@@ -10,10 +10,18 @@ python = "^3.11"
 fastapi = "^0.110.1"
 pydantic = "^2.7.0"
 ipaddress = "^1.0.23"
+pydantic-settings = "^2.2.1"
+uvicorn = "^0.29.0"
+ttp = "^0.9.5"
 
 
 [tool.poetry.group.device.dependencies]
 scrapli = "^2024.1.30"
+paramiko = "^3.4.0"
+
+
+[tool.poetry.group.format.dependencies]
+black = "^24.4.0"
 
 [build-system]
 requires = ["poetry-core"]
