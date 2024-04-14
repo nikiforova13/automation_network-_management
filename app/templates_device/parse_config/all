@@ -1,0 +1,14 @@
+<group name='configuration'>
+hostname {{ hostname | _line_ }}
+<group name="interfaces">
+interface {{ interface | _line_ }}
+ description {{ description | ORPHRASE }}
+ ip address {{ ip_address | _line_ }} {{ subnet_mask | _line_ }}
+ mtu {{ mtu | DIGIT }}
+ speed {{ speed | DIGIT }}
+ duplex {{ duplex | WORD }}
+</group>
+<group name="routing">
+ip route {{ destination | _line_ }} {{ subnet_mask | _line_ }} {{ next_hop | _line_ }}
+</group>
+</group>
