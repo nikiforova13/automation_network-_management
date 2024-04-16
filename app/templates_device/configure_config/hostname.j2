@@ -1,1 +1,2 @@
-hostname {{ hostname }}
+{%- set cmd="no " if action=="delete" -%}
+{{ cmd }}hostname {{ hostname }}

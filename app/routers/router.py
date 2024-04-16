@@ -20,8 +20,11 @@ async def create_configuration(params: DeviceConfigurationData) -> Response:
 
 
 @router.patch("")
-async def update_configuration(): ...
+async def update_configuration(params: DeviceConfigurationData) -> DeviceConfigurationData:
+    return await configure_device(params)
+
 
 
 @router.delete("")
-async def delete_configuration(): ...
+async def delete_configuration(params: DeviceConfigurationData) -> Response:
+    return await configure_device(params, action='delete')

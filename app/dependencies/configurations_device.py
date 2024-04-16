@@ -28,13 +28,17 @@ async def get_device_configuration(
         return await _parse_config(config=data)
 
 
-async def configure_device(params: DeviceConfigurationData):
+async def configure_device(params: DeviceConfigurationData, action: str | None = None):
+    if action == 'delete':
+        template
     configurations = params.configuration.model_dump(exclude_none=True)
-    cmds = template.render(configurations).split("\n")
+    cmds = template.render(configurations, action=action).split("\n")
+    print(cmds)
     with Scrapli(**driver._settings) as ssh:
         res = ssh.send_configs(
             cmds,
         )
+
         if res.failed:
             raise HTTPException(
                 status_code=503,
