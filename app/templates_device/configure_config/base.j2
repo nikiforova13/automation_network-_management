@@ -1,6 +1,9 @@
 {%- if hostname -%}
     {% include "hostname.j2" %}
 {%- endif -%}
+{%- if vlans -%}
+    {% include "vlan.j2" %}
+{%- endif -%}
 {%- if interfaces -%}
     {% include "interfaces.j2" %}
 {%- endif -%}
