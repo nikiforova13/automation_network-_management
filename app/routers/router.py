@@ -13,12 +13,11 @@ router = APIRouter(prefix="/configuration", tags=["Device Configuration"])
 @router.get("")
 async def get_configuration(request: Request) -> DeviceConfigurationData:
     if request:
-        return get_device_configuration(s="all", command=ShowCommandsCisco.ALL_CONFIG)
+        return get_device_configuration(command=ShowCommandsCisco.ALL_CONFIG)
 
 
 @router.post("")
 async def create_configuration(params: DeviceConfigurationData):
-    # print(params)
     return configure_device(params)
 
 

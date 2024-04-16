@@ -1,3 +1,0 @@
-<group name='configurations'>
-hostname {{ hostname | _line_ }}
-</group>

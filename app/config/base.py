@@ -5,7 +5,6 @@ APP_GLOBAL_PATH = pathlib.Path(__file__).absolute().parent.parent
 BASE_CONFIG: SettingsConfigDict = SettingsConfigDict(
     env_file=APP_GLOBAL_PATH.joinpath(".env"), env_file_encoding="utf-8"
 )
-print(APP_GLOBAL_PATH)
 
 
 def get_updated_model_config(orig: SettingsConfigDict, update: SettingsConfigDict):

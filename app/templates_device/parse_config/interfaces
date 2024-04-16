@@ -1,3 +1,0 @@
-<group name="interfaces">
-{{ interface | re("[\S]+") }} {{ ip_address | re("[\d.]+") }} {{ ok | re("[\S]+") }} {{ method | re("[\S]+") }} {{ status | re("[\S]+") }} {{ protocol | re("[\S]+") }}
-</group>
