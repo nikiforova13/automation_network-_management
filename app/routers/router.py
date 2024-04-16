@@ -4,16 +4,14 @@ from app.dependencies.configurations_device import (
     get_device_configuration,
     configure_device,
 )
-from enums.commands import ShowCommandsCisco
 from routers.api_schemas.configuration import DeviceConfigurationData
 
 router = APIRouter(prefix="/configuration", tags=["Device Configuration"])
 
 
 @router.get("")
-async def get_configuration(request: Request) -> DeviceConfigurationData:
-    if request:
-        return get_device_configuration(command=ShowCommandsCisco.ALL_CONFIG)
+async def get_configuration() -> DeviceConfigurationData:
+    return await get_device_configuration()
 
 
 @router.post("")

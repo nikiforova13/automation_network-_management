@@ -3,18 +3,27 @@ from scrapli import Scrapli
 from config.driver import driver
 from config.device_config import path_config_parse, template
 from app.routers.api_schemas.configuration import DeviceConfigurationData
+from app.enums import commands
+from scrapli.response import Response
+from fastapi.exceptions import ResponseValidationError, HTTPException
 
 
-def _parse_config(info: str | None = None):
-    b = info.ttp_parse_output(str(path_config_parse))
-    print(b)
-    return b[0]
+async def _parse_config(config: Response):
+    return config.ttp_parse_output(str(path_config_parse))[0]
 
 
-def get_device_configuration(command: str | None = None):
+async def get_device_configuration(command: commands.ShowCommandCisco | None = None) -> DeviceConfigurationData:
+    if not command:
+        command = commands.ShowCommandCisco.ALL_CONFIG
     with Scrapli(**driver._settings) as ssh:
-        a = ssh.send_command(command)
-        return _parse_config(a)
+        data = ssh.send_command(command)
+        if data.failed:
+            # return ResponseValidationError(errors='Команда не была успешно обработана')
+            raise HTTPException(
+                status_code=503,
+                detail=f"Команда {command} не была успешно обработана на устройстве",
+            )
+        return await _parse_config(config=data)
 
 
 def configure_device(params: DeviceConfigurationData):
