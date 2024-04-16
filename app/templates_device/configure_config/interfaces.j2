@@ -1,3 +1,9 @@
-{{ interface }}
-ip address {{ ip }}
-no shutdown
+{% for interface in interfaces %}
+{{ interface.interface }}
+ip address {{ interface.ip_address }} {{ interface.subnet_mask }}
+{{ interface.status }}
+{%- if interface.vlan and interface.mode -%}
+switchport access vlan {{interface.vlan }}
+switchport mode {{ interface.mode }}
+{%- endif -%}
+{%- endfor -%}

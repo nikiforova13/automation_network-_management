@@ -1,0 +1,5 @@
+{%- if routing.static -%}
+{% for route in routing.static %}
+ip route {{route.destination}} {{ route.subnet_mask }} {{ route.next_hop }}
+{%- endfor -%}
+{%- endif -%}

@@ -8,7 +8,7 @@ from app.models.routing import Routing
 class DeviceConfiguration(BaseModel):
     hostname: str | None = None
     interfaces: list[Interface] | None = None
-    routing: list[Routing] | None = None
+    routing: Routing | None = None
 
 
 class DeviceConfigurationData(BaseModel):
