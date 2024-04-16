@@ -20,7 +20,7 @@ async def create_configuration(params: DeviceConfigurationData) -> Response:
 
 
 @router.patch("")
-async def update_configuration(params: DeviceConfigurationData) -> DeviceConfigurationData:
+async def update_configuration(params: DeviceConfigurationData) -> Response:
     return await configure_device(params)
 
 
