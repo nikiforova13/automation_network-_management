@@ -12,8 +12,10 @@ class DeviceConfiguration(BaseModel):
     interfaces: list[Interface] | None = None
     routing: Routing | None = None
 
+
 # class DeviceConfigurationResponse(BaseModel):
 #     configuration: DeviceConfiguration
+
 
 class DeviceConfigurationData(BaseModel):
     configuration: DeviceConfiguration
