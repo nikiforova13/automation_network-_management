@@ -1,10 +1,7 @@
 from pydantic import BaseModel
 from ipaddress import IPv4Address, IPv4Network
 
-
-class Vlan(BaseModel):
-    number: int | None = None
-    mode: str | None = None
+from app.models.vlan import VlanOnInterface
 
 
 class Interface(BaseModel):
@@ -13,4 +10,4 @@ class Interface(BaseModel):
     subnet_mask: str | None = None
     status: str | None = None
     duplex: str | None = None
-    vlan: Vlan | None = None
+    vlan: VlanOnInterface | None = None

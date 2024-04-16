@@ -4,15 +4,17 @@ from config.driver import driver
 from config.device_config import path_config_parse, template
 from app.routers.api_schemas.configuration import DeviceConfigurationData
 from app.enums import commands
-from scrapli.response import Response
+from scrapli.response import Response as ScrapliResponse
 from fastapi.exceptions import ResponseValidationError, HTTPException
+from fastapi.responses import Response
 
-
-async def _parse_config(config: Response):
+async def _parse_config(config: ScrapliResponse):
     return config.ttp_parse_output(str(path_config_parse))[0]
 
 
-async def get_device_configuration(command: commands.ShowCommandCisco | None = None) -> DeviceConfigurationData:
+async def get_device_configuration(
+    command: commands.ShowCommandCisco | None = None,
+) -> DeviceConfigurationData:
     if not command:
         command = commands.ShowCommandCisco.ALL_CONFIG
     with Scrapli(**driver._settings) as ssh:
@@ -26,20 +28,16 @@ async def get_device_configuration(command: commands.ShowCommandCisco | None = N
         return await _parse_config(config=data)
 
 
-def configure_device(params: DeviceConfigurationData):
+async def configure_device(params: DeviceConfigurationData):
     configurations = params.configuration.model_dump(exclude_none=True)
-    commands = template.render(configurations)
-    print(commands)
-    print(commands.split("\n"))
-
+    cmds = template.render(configurations).split("\n")
     with Scrapli(**driver._settings) as ssh:
-        ...
-        # a = ssh.send_configs(
-        #     ["interface FastEthernet0/1", "ip address 10.10.9.9 255.255.255.0"],
-        # )
-        # a = ssh.send_configs(
-        # )
-        # print(a)
-        # if a.failed:
-        #     raise ValueError(a.result)
-        # return a
+        res = ssh.send_configs(
+            cmds,
+        )
+        if res.failed:
+            raise HTTPException(
+                status_code=503,
+                detail=f"Во время конфигурации устройства произошла ошибка",
+            )
+        return Response(status_code=200, content='Successful Response')

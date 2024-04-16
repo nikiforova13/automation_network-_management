@@ -5,7 +5,7 @@ from app.dependencies.configurations_device import (
     configure_device,
 )
 from routers.api_schemas.configuration import DeviceConfigurationData
-
+from fastapi.responses import Response
 router = APIRouter(prefix="/configuration", tags=["Device Configuration"])
 
 
@@ -15,8 +15,8 @@ async def get_configuration() -> DeviceConfigurationData:
 
 
 @router.post("")
-async def create_configuration(params: DeviceConfigurationData):
-    return configure_device(params)
+async def create_configuration(params: DeviceConfigurationData) -> Response:
+    return await configure_device(params)
 
 
 @router.patch("")
