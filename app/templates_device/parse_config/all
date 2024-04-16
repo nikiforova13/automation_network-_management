@@ -1,5 +1,9 @@
 <group name='configuration'>
 hostname {{ hostname | _line_ }}
+<group name="vlans">
+vlan {{ number }}
+ name {{ name }}
+</group>
 <group name="interfaces">
 interface {{ interface | _line_ }}
  description {{ description | ORPHRASE }}
@@ -7,8 +11,14 @@ interface {{ interface | _line_ }}
  mtu {{ mtu | DIGIT }}
  speed {{ speed | DIGIT }}
  duplex {{ duplex | WORD }}
+ <group name="vlan">
+ switchport access vlan {{ number }}
+ switchport mode {{ mode }}
+ </group>
 </group>
 <group name="routing">
+<group name="static">
 ip route {{ destination | _line_ }} {{ subnet_mask | _line_ }} {{ next_hop | _line_ }}
+</group>
 </group>
 </group>

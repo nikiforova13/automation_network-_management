@@ -34,6 +34,7 @@ env = Environment(loader=FileSystemLoader(PATH_CONFIG_CONFIGURE))
 def _parse_config(s: str | None = None, info: str | None = None):
     path = PATH_CONFIG_PARSE.joinpath(s)
     b = info.ttp_parse_output(str(path))
+    print(info)
     return b[0]
 
 
@@ -41,6 +42,7 @@ def get_device_configuration(s: str | None = None, command: str | None = None):
     with Scrapli(**driver._settings) as ssh:
         print(PATH_CONFIG_PARSE)
         a = ssh.send_command(command)
+        print(a.result)
         return _parse_config(s, a)
 
 

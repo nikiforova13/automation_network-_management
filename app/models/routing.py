@@ -9,5 +9,5 @@ class StaticRoutes(BaseModel):
 class OSPF(BaseModel):
     ...
 class Routing(BaseModel):
-    static: list[StaticRoutes] | None
-    ospf: list[OSPF] | None
+    static: list[StaticRoutes] | None = None
+    ospf: list[OSPF] | None = None
