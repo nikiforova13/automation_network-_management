@@ -1,12 +1,13 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from ipaddress import IPv4Address, IPv4Network
 
 from app.models.interfaces import Interface
 from app.models.routing import Routing
 from app.models.vlan import VlanOnDevice
+from app.routers.api_schemas.base import BaseCase
 
 
-class DeviceConfiguration(BaseModel):
+class DeviceConfiguration(BaseModel, BaseCase):
     hostname: str | None = None
     vlans: list[VlanOnDevice] | None = None
     interfaces: list[Interface] | None = None
@@ -17,7 +18,7 @@ class DeviceConfiguration(BaseModel):
 #     configuration: DeviceConfiguration
 
 
-class DeviceConfigurationData(BaseModel):
+class DeviceConfigurationData(BaseModel, BaseCase):
     configuration: DeviceConfiguration
 
 
