@@ -1,5 +1,5 @@
 {%- set cmd="no " if action=="delete" -%}
 {% for vlan in vlans %}
-{{cmd}}vlan vlan.number
-{{cmd}}name vlan.name
-{% endfor %}
+{{cmd}}vlan {{ vlan.number }}
+{{cmd}}name {{ vlan.name }}
+{%- endfor -%}
