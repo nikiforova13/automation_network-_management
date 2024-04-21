@@ -1,22 +1,87 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Интерфейс для получения конфигурации устройства</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Configuration</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        td:first-child {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-{% for config in configurations.configuration %}
-    <div>
-        <h1>{{ config }}</h1>
+<h3>Интерфейс для получения конфигурации устройства</h3>
+<form>
+    <label for="hostname">Hostname:</label>
+    <input type="text" id="hostname" name="hostname"><br><br>
+    <input type="submit" value="Получить конфиг">
+</form>
 
-        <h3>{{fff}}</h3>
-    </div>
-
-
-</div>
-{% endfor %}
+{%- if configurations -%}
+<h3>Network Configuration {{ configurations.configuration.hostname }}</h3>
+{% for config, values in configurations.configuration.items() %}
+<table>
+    {%- if config == 'interfaces' -%}
+    <tr>
+        <th>Interfaces</th>
+        <td>
+            <table>
+                <tr>
+                    <th>Interface</th>
+                    <th>IP Address</th>
+                    <th>Subnet Mask</th>
+                </tr>
+                {%- for value in values -%}
+                <tr>
+                    <td>{{ value.interface or '-' }}</td>
+                    <td>{{ value.ip_address or '-' }}</td>
+                    <td>{{ value.subnet_mask or '-' }}</td>
+                </tr>
+                {%- endfor -%}
+            </table>
+        </td>
+    </tr>
+    {%- endif -%}
+    {%- if config == 'routing' -%}
+    <tr>
+        <th>Routing</th>
+        <td>
+            <table>
+                <tr>
+                    <th>Destination</th>
+                    <th>Subnet Mask</th>
+                    <th>Next Hop</th>
+                </tr>
+                {%- for v in values.static -%}
+                <tr>
+                    <td>{{ v.destination or '-' }}</td>
+                    <td>{{ v.subnet_mask or '-' }}</td>
+                    <td>{{ v.next_hop or '-' }}</td>
+                </tr>
+                {%- endfor -%}
+            </table>
+        </td>
+    </tr>
+    {%- endif -%}
+</table>
+{%- endfor -%}
+{%- endif -%}
 </body>
 </html>
