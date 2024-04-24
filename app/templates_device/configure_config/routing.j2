@@ -4,3 +4,12 @@
 {{cmd}}ip route {{route.destination}} {{ route.subnet_mask }} {{ route.next_hop }}
 {%- endfor -%}
 {%- endif -%}
+{%- if routing.ospf -%}
+{% for route in routing.ospf.networks %}
+router ospf 1
+network {{ route.network }} {{ route.subnet_mask }} area {{ route.area }}
+{%- endfor -%}
+{% if routing.ospf.router_id %}
+router-id {{ routing.ospf.router_id }}
+{%- endif -%}
+{%- endif -%}

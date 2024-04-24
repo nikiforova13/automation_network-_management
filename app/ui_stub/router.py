@@ -13,7 +13,7 @@ from routers.api_schemas.configuration import DeviceConfigurationData
 
 APP_GLOBAL_PATH = pathlib.Path(__file__).absolute().parent.parent.joinpath("templates")
 
-router = APIRouter(prefix="/ui/configuration", tags=['Ui-stub'])
+router = APIRouter(prefix="/ui/configuration", tags=["Ui-stub"])
 
 templates = Jinja2Templates(directory=APP_GLOBAL_PATH)
 
@@ -29,7 +29,5 @@ async def get_configuration(
         config = await get_device_configuration()
     return templates.TemplateResponse(
         name="device.html",
-        context={"request": request,
-                 "configurations": config
-                 },
+        context={"request": request, "configurations": config},
     )

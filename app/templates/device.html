@@ -38,6 +38,25 @@
 <h3>Network Configuration {{ configurations.configuration.hostname }}</h3>
 {% for config, values in configurations.configuration.items() %}
 <table>
+    {%- if config == 'vlans' -%}
+    <tr>
+        <th>Vlans</th>
+        <td>
+            <table>
+                <tr>
+                    <th>Number</th>
+                    <th>Name</th>
+                </tr>
+                {%- for value in values -%}
+                <tr>
+                    <td>{{ value.number or '-' }}</td>
+                    <td>{{ value.name or '-' }}</td>
+                </tr>
+                {%- endfor -%}
+            </table>
+        </td>
+    </tr>
+    {%- endif -%}
     {%- if config == 'interfaces' -%}
     <tr>
         <th>Interfaces</th>
@@ -47,12 +66,20 @@
                     <th>Interface</th>
                     <th>IP Address</th>
                     <th>Subnet Mask</th>
+                    <th>Status</th>
+                    <th>Vlan</th>
                 </tr>
                 {%- for value in values -%}
                 <tr>
                     <td>{{ value.interface or '-' }}</td>
                     <td>{{ value.ip_address or '-' }}</td>
                     <td>{{ value.subnet_mask or '-' }}</td>
+                    <td>{{ value.status or '-' }}</td>
+                    {%- if value.vlan -%}
+                    <td>{{ value.vlan.number, value.vlan.mode }}</td>
+                    {% else %}
+                    <td>-</td>
+                    {% endif %}
                 </tr>
                 {%- endfor -%}
             </table>

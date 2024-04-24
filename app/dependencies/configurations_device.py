@@ -35,6 +35,7 @@ async def configure_device(
 ):
     configurations = params.configuration.model_dump(exclude_none=True)
     cmds = template.render(configurations, action=action).split("\n")
+    cmds.remove("")
     print(cmds)
     with Scrapli(**driver._settings) as ssh:
         res = ssh.send_configs(
