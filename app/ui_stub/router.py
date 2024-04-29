@@ -8,7 +8,10 @@ from fastapi import APIRouter, Depends, Form, Query
 from app.routers.router import get_configuration
 from fastapi.templating import Jinja2Templates
 
-from app.dependencies.configurations_device import get_device_configuration
+from app.dependencies.configurations_device import (
+    get_device_configuration,
+    subnet_masks_with_prefix,
+)
 from routers.api_schemas.configuration import DeviceConfigurationData
 
 APP_GLOBAL_PATH = pathlib.Path(__file__).absolute().parent.parent.joinpath("templates")
@@ -30,4 +33,22 @@ async def get_configuration(
     return templates.TemplateResponse(
         name="device.html",
         context={"request": request, "configurations": config},
+    )
+
+
+@router.get("/create", response_class=HTMLResponse)
+async def create_configuration(request: Request):
+    return templates.TemplateResponse(
+        name="configure.html",
+        context={"request": request, "subnet_masks": subnet_masks_with_prefix()},
+    )
+
+
+@router.post("/create", response_class=HTMLResponse)
+async def create_configuration(request: Request):
+    data = await request.form()
+    print(data)
+    return templates.TemplateResponse(
+        name="configure.html",
+        context={"request": request, "subnet_masks": subnet_masks_with_prefix()},
     )

@@ -1,3 +1,4 @@
+import ipaddress
 from scrapli import Scrapli
 
 from config.driver import driver
@@ -48,3 +49,11 @@ async def configure_device(
                 detail=f"Во время конфигурации устройства произошла ошибка",
             )
         return Response(status_code=200, content="Successful Response")
+
+
+def subnet_masks_with_prefix():
+    subnet_masks = []
+    for prefix_length in range(33):
+        network = ipaddress.IPv4Network(("0.0.0.0", prefix_length), strict=False)
+        subnet_masks.append(f"{str(network.netmask)} /{prefix_length}")
+    return subnet_masks
