@@ -33,7 +33,7 @@ async def get_device_configuration(
 ) -> DeviceConfigurationData:
     if not command:
         command = commands.ShowCommandCisco.ALL_CONFIG
-    logger.debug(f"Getting configurations with {hostname}")
+    logger.info(f"Getting configurations with {hostname}")
     with Scrapli(**_settings_driver(hostname)) as ssh:
         data = ssh.send_command(command)
         if data.failed:
@@ -42,6 +42,7 @@ async def get_device_configuration(
                 status_code=503,
                 detail=f"Команда {command} не была успешно обработана на устройстве",
             )
+        logger.info("The configuration has been successfully received")
         return await _parse_config(config=data)
 
 
@@ -53,8 +54,7 @@ async def configure_device(
     configurations = params.configuration.model_dump(exclude_none=True)
     cmds = template.render(configurations, action=action).split("\n")
     cmds.remove("")
-    print("cmds=", cmds)
-    logger.debug(f"Device {hostname} configuring {cmds}")
+    logger.info(f"Device {hostname} configuring {cmds}")
     with Scrapli(**_settings_driver(hostname)) as ssh:
         res = ssh.send_configs(
             cmds,
@@ -65,6 +65,7 @@ async def configure_device(
                 status_code=503,
                 detail=f"Во время конфигурации устройства произошла ошибка",
             )
+        logger.info(f"The device {hostname} has been successfully configured")
         return Response(status_code=200, content="Successful Response")
 
 
