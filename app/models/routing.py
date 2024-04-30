@@ -36,7 +36,7 @@ class NetworkByArea(BaseModel, BaseCase):
 
 
 class OSPF(BaseModel, BaseCase):
-    networks: list[NetworkByArea]
+    networks: list[NetworkByArea] | NetworkByArea
     router_id: str | None = None
 
 

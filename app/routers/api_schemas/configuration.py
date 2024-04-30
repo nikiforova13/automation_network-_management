@@ -16,7 +16,3 @@ class DeviceConfiguration(BaseModel, BaseCase):
 
 class DeviceConfigurationData(BaseModel, BaseCase):
     configuration: DeviceConfiguration
-
-
-class CreateConfiguration(DeviceConfiguration):
-    ip_address: IPv4Address | None = None

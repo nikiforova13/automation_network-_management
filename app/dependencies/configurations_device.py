@@ -1,7 +1,7 @@
 import ipaddress
 from scrapli import Scrapli
 
-from config.driver import driver
+from config.driver import driver, device
 from config.device_config import path_config_parse, template
 from app.routers.api_schemas.configuration import DeviceConfigurationData
 from app.enums import commands, configurations
@@ -17,6 +17,16 @@ async def _parse_config(config: ScrapliResponse):
     return config.ttp_parse_output(str(path_config_parse))[0]
 
 
+def _settings_driver(hostname: str):
+    device_settings = device._devices
+    driver_settings = driver._settings
+
+    if driver_settings.get("host") is None:
+        host = device_settings.get(hostname)
+        driver_settings.update({"host": host})
+    return driver_settings
+
+
 async def get_device_configuration(
     hostname: str,
     command: commands.ShowCommandCisco | None = None,
@@ -24,7 +34,7 @@ async def get_device_configuration(
     if not command:
         command = commands.ShowCommandCisco.ALL_CONFIG
     logger.debug(f"Getting configurations with {hostname}")
-    with Scrapli(**driver._settings) as ssh:
+    with Scrapli(**_settings_driver(hostname)) as ssh:
         data = ssh.send_command(command)
         if data.failed:
             # return ResponseValidationError(errors='Команда не была успешно обработана')
@@ -43,8 +53,9 @@ async def configure_device(
     configurations = params.configuration.model_dump(exclude_none=True)
     cmds = template.render(configurations, action=action).split("\n")
     cmds.remove("")
+    print("cmds=", cmds)
     logger.debug(f"Device {hostname} configuring {cmds}")
-    with Scrapli(**driver._settings) as ssh:
+    with Scrapli(**_settings_driver(hostname)) as ssh:
         res = ssh.send_configs(
             cmds,
         )

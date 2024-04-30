@@ -14,7 +14,6 @@ from app.config.device_config import templates
 from app.models.vlan import VlanOnDevice
 from routers.api_schemas.configuration import (
     DeviceConfigurationData,
-    CreateConfiguration,
 )
 
 router = APIRouter(prefix="/ui/configuration", tags=["Ui-stub"])
