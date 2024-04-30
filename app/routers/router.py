@@ -1,31 +1,36 @@
 from fastapi import APIRouter
-from fastapi.requests import Request
 from app.dependencies.configurations_device import (
     get_device_configuration,
     configure_device,
 )
 from enums import configurations
-from routers.api_schemas.configuration import DeviceConfigurationData
+from routers.api_schemas.configuration import DeviceConfigurationData, CreateConfiguration
 from fastapi.responses import Response
 
 router = APIRouter(prefix="/configuration", tags=["Device Configuration"])
 
 
-@router.get("")
-async def get_configuration() -> DeviceConfigurationData:
-    return await get_device_configuration()
+@router.get("/{hostname}")
+async def get_configuration(hostname: str) -> DeviceConfigurationData:
+    return await get_device_configuration(hostname)
 
 
-@router.post("")
-async def create_configuration(params: DeviceConfigurationData) -> Response:
-    return await configure_device(params)
+@router.post("/{hostname}")
+async def create_configuration(
+    hostname: str, params: CreateConfiguration
+) -> Response:
+    return await configure_device(hostname, params)
 
 
-@router.patch("")
-async def update_configuration(params: DeviceConfigurationData) -> Response:
-    return await configure_device(params)
+@router.patch("/{hostname}")
+async def update_configuration(
+    hostname: str, params: DeviceConfigurationData
+) -> Response:
+    return await configure_device(hostname, params)
 
 
-@router.delete("")
-async def delete_configuration(params: DeviceConfigurationData) -> Response:
-    return await configure_device(params, action=configurations.Action.delete)
+@router.delete("/{hostname}")
+async def delete_configuration(
+    hostname: str, params: DeviceConfigurationData
+) -> Response:
+    return await configure_device(hostname, params, action=configurations.Action.delete)

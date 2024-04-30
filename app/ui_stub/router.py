@@ -12,7 +12,10 @@ from app.dependencies.configurations_device import (
 )
 from app.config.device_config import templates
 from app.models.vlan import VlanOnDevice
-from routers.api_schemas.configuration import DeviceConfigurationData, CreateConfiguration
+from routers.api_schemas.configuration import (
+    DeviceConfigurationData,
+    CreateConfiguration,
+)
 
 router = APIRouter(prefix="/ui/configuration", tags=["Ui-stub"])
 
@@ -42,7 +45,7 @@ async def create_configuration(request: Request):
 @router.post("/create", response_class=HTMLResponse)
 async def create_configuration(request: Request):
     data = await request.form()
-    print(f'{data=}')
+    print(f"{data=}")
     for k, v in data.items():
         print(k)
         print(v)

@@ -14,7 +14,6 @@ class DeviceConfiguration(BaseModel, BaseCase):
     routing: Routing | None = None
 
 
-
 class DeviceConfigurationData(BaseModel, BaseCase):
     configuration: DeviceConfiguration
 

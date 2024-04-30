@@ -8,6 +8,9 @@ from app.enums import commands, configurations
 from scrapli.response import Response as ScrapliResponse
 from fastapi.exceptions import ResponseValidationError, HTTPException
 from fastapi.responses import Response
+import logging
+
+logger = logging.getLogger("__name__")
 
 
 async def _parse_config(config: ScrapliResponse):
@@ -15,10 +18,12 @@ async def _parse_config(config: ScrapliResponse):
 
 
 async def get_device_configuration(
+    hostname: str,
     command: commands.ShowCommandCisco | None = None,
 ) -> DeviceConfigurationData:
     if not command:
         command = commands.ShowCommandCisco.ALL_CONFIG
+    logger.debug(f"Getting configurations with {hostname}")
     with Scrapli(**driver._settings) as ssh:
         data = ssh.send_command(command)
         if data.failed:
@@ -31,13 +36,14 @@ async def get_device_configuration(
 
 
 async def configure_device(
+    hostname: str,
     params: DeviceConfigurationData,
     action: configurations.Action | None = configurations.Action.create,
 ):
     configurations = params.configuration.model_dump(exclude_none=True)
     cmds = template.render(configurations, action=action).split("\n")
     cmds.remove("")
-    print(cmds)
+    logger.debug(f"Device {hostname} configuring {cmds}")
     with Scrapli(**driver._settings) as ssh:
         res = ssh.send_configs(
             cmds,
