@@ -14,13 +14,10 @@ class DeviceConfiguration(BaseModel, BaseCase):
     routing: Routing | None = None
 
 
-# class DeviceConfigurationResponse(BaseModel):
-#     configuration: DeviceConfiguration
-
 
 class DeviceConfigurationData(BaseModel, BaseCase):
     configuration: DeviceConfiguration
 
 
-# class CreateConfiguration(BaseModel, DeviceConfiguration):
-#     ip_address: IPv4Address | None = None
+class CreateConfiguration(DeviceConfiguration):
+    ip_address: IPv4Address | None = None

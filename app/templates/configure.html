@@ -29,7 +29,7 @@
 </head>
 <body>
 <h3>Интерфейс для настройки устройства</h3>
-<form method="post">
+<form method="post" >
     <label for="hostname">Hostname:</label>
     <input type="text" id="hostname" name="hostname"><br><br>
     <label for="ip_address_device">IP address:</label>
@@ -44,8 +44,8 @@
                         <th>Name</th>
                     </tr>
                     <tr>
-                        <td><input type="text" id="number" name="number" placeholder="example: 22"><br><br></td>
-                        <td><input type="text" id="name" name="name" placeholder="example: vlan201"><br><br></td>
+                        <td><input type="text" id="number" name="vlan_number" placeholder="example: 22"><br><br></td>
+                        <td><input type="text" id="name" name="vlan_name" placeholder="example: vlan201"><br><br></td>
                     </tr>
                 </table>
                 <button type="button" onclick="addRow('vlans_table')">+</button>
@@ -64,7 +64,7 @@
                     </tr>
                     <tr>
                         <td><input type="text" id="interface" name="interface"><br><br></td>
-                        <td><input type="text" id="ip_address" name="ip_address"
+                        <td><input type="text" id="ip_address" name="address"
                                    placeholder="example: 10.12.1.1"><br><br></td>
                         <td><select name="Subnet mask" id="subnet_mask">
                             {% for mask in subnet_masks %}
@@ -74,10 +74,10 @@
                             <option value="shutdown">shutdown</option>
                             <option value="no shutdown">no shutdown</option>
                         </select><br><br></td>
-                        <td><input type="text" id="vlan_name" name="vlan_name" placeholder="name"><br><br>
-                            <input type="text" id="vlan_number" name="vlan_number" placeholder="number"><br><br>
+                        <td><input type="text" id="int_vlan_name" name="int_vlan_name" placeholder="name"><br><br>
+                            <input type="text" id="int_vlan_number" name="int_vlan_number" placeholder="number"><br><br>
                             <label for="mode">mode:</label>
-                            <select name="mode" id="mode">
+                            <select name="int_vlan_mode" id="mode">
                                 <option value="access">access</option>
                                 <option value="trunk">trunk</option>
                             </select><br><br>

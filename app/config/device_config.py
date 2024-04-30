@@ -2,6 +2,7 @@ import pathlib
 from app.routers.api_schemas.configuration import DeviceConfigurationData
 
 from jinja2 import Environment, FileSystemLoader
+from fastapi.templating import Jinja2Templates
 
 path_config_parse = (
     pathlib.Path(__file__)
@@ -21,3 +22,10 @@ path_configure_device = (
 
 env = Environment(loader=FileSystemLoader(path_configure_device))
 template = env.get_template("base.j2")
+
+
+path_html_templates = (
+    pathlib.Path(__file__).absolute().parent.parent.joinpath("templates")
+)
+
+templates = Jinja2Templates(directory=path_html_templates)
