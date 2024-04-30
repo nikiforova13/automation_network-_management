@@ -76,13 +76,12 @@
                         </select><br><br></td>
                         <td><input type="text" id="vlan_name" name="vlan_name" placeholder="name"><br><br>
                             <input type="text" id="vlan_number" name="vlan_number" placeholder="number"><br><br>
-                            <label for="vlan_mode">mode: </label>
-                            <select>name="vlan_mode" id="vlan_mode"
+                            <label for="mode">mode:</label>
+                            <select name="mode" id="mode">
                                 <option value="access">access</option>
                                 <option value="trunk">trunk</option>
                             </select><br><br>
                         </td>
-
                     </tr>
                 </table>
                 <button type="button" onclick="addRow('interfaces_table')">+</button>
