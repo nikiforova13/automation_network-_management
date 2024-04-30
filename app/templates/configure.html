@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Network Configuration</title>
+    <title>Device configure</title>
     <style>
         table {
-            width: 100%;
             border-collapse: collapse;
+            width: 100%;
         }
 
         th, td {
@@ -21,23 +21,24 @@
             background-color: #f2f2f2;
         }
 
-        td:first-child {
-            font-weight: bold;
+        button {
+            padding: 5px 10px;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-<h3>Интерфейс для настройки конфигурации на устройстве</h3>
+<h3>Интерфейс для настройки устройства</h3>
 <form method="post">
     <label for="hostname">Hostname:</label>
     <input type="text" id="hostname" name="hostname"><br><br>
-    <label for="IP address">IP address:</label>
-    <input type="text" id="IP address" name="ip_address"><br><br>
+    <label for="ip_address_device">IP address:</label>
+    <input type="text" id="ip_address_device" name="ip_address"><br><br>
     <table>
         <tr>
-            <th>Vlans</th>
+            <th colspan="2">Vlans</th>
             <td>
-                <table>
+                <table id="vlans_table">
                     <tr>
                         <th>Number</th>
                         <th>Name</th>
@@ -47,12 +48,13 @@
                         <td><input type="text" id="name" name="name" placeholder="example: vlan201"><br><br></td>
                     </tr>
                 </table>
+                <button type="button" onclick="addRow('vlans_table')">+</button>
             </td>
         </tr>
         <tr>
-            <th>Interfaces</th>
+            <th colspan="2">Interfaces</th>
             <td>
-                <table>
+                <table id="interfaces_table">
                     <tr>
                         <th>Interface</th>
                         <th>IP Address</th>
@@ -66,48 +68,69 @@
                                    placeholder="example: 10.12.1.1"><br><br></td>
                         <td><select name="Subnet mask" id="subnet_mask">
                             {% for mask in subnet_masks %}
-                            <option value={{ mask }}>{{ mask }}</option>
+                            <option value="{{ mask }}">{{ mask }}</option>
                             {% endfor %}</select><br><br></td>
                         <td><select name="status" id="status">
                             <option value="shutdown">shutdown</option>
                             <option value="no shutdown">no shutdown</option>
                         </select><br><br></td>
-
                         <td><input type="text" id="vlan_name" name="vlan_name" placeholder="name"><br><br>
-                        <input type="text" id="vlan_number" name="vlan_number" placeholder="number"><br><br>
-                            <label for="vlan_mode">mode:</label>
+                            <input type="text" id="vlan_number" name="vlan_number" placeholder="number"><br><br>
+                            <label for="vlan_mode">mode: </label>
                             <select>name="vlan_mode" id="vlan_mode"
-                            <option value="access">access</option>
-                            <option value="trunk">trunk</option>
-                        </select><br><br>
+                                <option value="access">access</option>
+                                <option value="trunk">trunk</option>
+                            </select><br><br>
                         </td>
+
                     </tr>
                 </table>
+                <button type="button" onclick="addRow('interfaces_table')">+</button>
             </td>
         </tr>
         <tr>
-            <th>Routing</th>
+            <th colspan="2">Routing</th>
             <td>
-                <table>
+                <table id="routing_table">
                     <tr>
                         <th>Destination</th>
                         <th>Subnet Mask</th>
                         <th>Next Hop</th>
                     </tr>
                     <tr>
-                        <td><input type="text" id="destination" name="destination"><br><br></td>
+                        <td><input type="text" name="destination" placeholder="example: 10.10.1.0"></td>
                         <td><select name="Subnet mask" id="dst_subnet_mask">
                             {% for mask in subnet_masks %}
-                            <option value={{ mask }}>{{ mask }}</option>
+                            <option value="{{ mask }}">{{ mask }}</option>
                             {% endfor %}</select><br><br></td>
-                        <td><input type="text" id="next_hop" name="next_hop"><br><br></td>
+                        <td><input type="text" name="next_hop" placeholder="example: 10.10.1.200"></td>
                     </tr>
                 </table>
+                <button type="button" onclick="addRow('routing_table')">+</button>
             </td>
         </tr>
     </table>
     <br>
     <input type="submit" value="Configure">
 </form>
+
+<script>
+    function addRow(tableId) {
+        var table = document.getElementById(tableId);
+        var newRow = table.rows[1].cloneNode(true);
+        var inputs = newRow.getElementsByTagName("input");
+        var selects = newRow.getElementsByTagName("select");
+
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].value = '';
+        }
+
+        for (var j = 0; j < selects.length; j++) {
+            selects[j].value = selects[j].options[0].value; // Сбросить выбранный вариант в значение по умолчанию
+        }
+
+        table.appendChild(newRow);
+    }
+</script>
 </body>
 </html>
