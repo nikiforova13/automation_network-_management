@@ -1,8 +1,8 @@
 {%- set cmd="no " if action=="delete" -%}
 {% for interface in interfaces %}
-{{ interface.interface }}
-{{cmd}}ip address {{ interface.ip_address }} {{ interface.subnet_mask }}
-{{no}}{{ interface.status }}
+interface {{ interface.interface }}
+{{cmd}}ip address {{ interface.address }} {{ interface.subnet_mask }}
+{{ interface.status }}
 {%- if interface.vlan and interface.mode -%}
 {{cmd}}switchport access vlan {{interface.vlan }}
 {{cmd}}switchport mode {{ interface.mode }}

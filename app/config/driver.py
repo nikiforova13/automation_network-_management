@@ -2,7 +2,7 @@ from pydantic import Field, field_validator, ValidationError, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from ipaddress import IPv4Address
 from typing import Literal, Any
-from config.base import get_updated_model_config, BASE_CONFIG
+from app.config.base import get_updated_model_config, BASE_CONFIG
 
 
 class BaseNetworkDriverSettings(BaseSettings):

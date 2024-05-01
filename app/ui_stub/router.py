@@ -12,7 +12,7 @@ from app.dependencies.configurations_device import (
 )
 from app.config.device_config import templates
 from app.models.vlan import VlanOnDevice
-from routers.api_schemas.configuration import (
+from app.routers.api_schemas.configuration import (
     DeviceConfigurationData,
 )
 
@@ -27,7 +27,6 @@ async def get_configuration(
     config = ""
     if hostname:
         config = await get_device_configuration(hostname)
-    print(config)
     return templates.TemplateResponse(
         name="device.html",
         context={"request": request, "configurations": config},

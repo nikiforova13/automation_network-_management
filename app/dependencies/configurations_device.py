@@ -1,16 +1,14 @@
 import ipaddress
 from scrapli import Scrapli
 
-from config.driver import driver, device
-from config.device_config import path_config_parse, template
+from app.config.driver import driver, device
+from app.config.device_config import path_config_parse, template
 from app.routers.api_schemas.configuration import DeviceConfigurationData
 from app.enums import commands, configurations
 from scrapli.response import Response as ScrapliResponse
 from fastapi.exceptions import ResponseValidationError, HTTPException
 from fastapi.responses import Response
-import logging
-
-logger = logging.getLogger("__name__")
+from app.logger import logger
 
 
 async def _parse_config(config: ScrapliResponse):

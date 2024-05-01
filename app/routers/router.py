@@ -3,8 +3,8 @@ from app.dependencies.configurations_device import (
     get_device_configuration,
     configure_device,
 )
-from enums import configurations
-from routers.api_schemas.configuration import DeviceConfigurationData
+from app.enums import configurations
+from app.routers.api_schemas.configuration import DeviceConfigurationData
 from fastapi.responses import Response
 
 router = APIRouter(prefix="/configuration", tags=["Device Configuration"])
