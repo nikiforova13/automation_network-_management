@@ -11,4 +11,4 @@ app.include_router(configurations_router)
 app.include_router(configurations_ui_router)
 
 if __name__ == "__main__":
-    uvicorn.run(app=app, port=8000, host="127.0.0.1")
+    uvicorn.run(app=app, port=8001, host="127.0.0.1")

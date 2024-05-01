@@ -7,7 +7,7 @@ vlan {{ number }}
 <group name="interfaces">
 interface {{ interface | _line_ }}
  description {{ description | ORPHRASE }}
- ip address {{ ip_address | _line_ }} {{ subnet_mask | _line_ }}
+ ip address {{ address | _line_ }} {{ subnet_mask | _line_ }}
  shutdown {{ status | set(shutdown) }}
  mtu {{ mtu | DIGIT }}
  speed {{ speed | DIGIT }}

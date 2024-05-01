@@ -32,7 +32,7 @@ class StaticRoutes(BaseModel, BaseCase):
 class NetworkByArea(BaseModel, BaseCase):
     network: typing.Annotated[str, BeforeValidator(is_ip_network)] | None = None
     subnet_mask: str | None = None
-    area: int
+    area: int | None = None
 
 
 class OSPF(BaseModel, BaseCase):

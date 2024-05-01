@@ -9,12 +9,16 @@ from app.routers.router import get_configuration
 from app.dependencies.configurations_device import (
     get_device_configuration,
     subnet_masks_with_prefix,
+    configure_device,
 )
 from app.config.device_config import templates
 from app.models.vlan import VlanOnDevice
 from app.routers.api_schemas.configuration import (
     DeviceConfigurationData,
+    DeviceConfiguration,
 )
+from app.models.interfaces import Interface
+from app.models.routing import Routing, StaticRoutes, OSPF, NetworkByArea
 
 router = APIRouter(prefix="/ui/configuration", tags=["Ui-stub"])
 
@@ -44,38 +48,53 @@ async def create_configuration(request: Request):
 @router.post("/create", response_class=HTMLResponse)
 async def create_configuration(request: Request):
     data = await request.form()
-    print(f"{data=}")
-    for k, v in data.items():
-        print(k)
-        print(v)
-    # hostname = data.get('ip_address')
-    # print(hostname)
-    # data1 = []
-    # vlan_on_device = []
-    # vlan_names = [
-    # ]
-    # vlan_numbers = []
-    # for key, value in data.items():
-    #     print(key)
-    #     print(value)
-    #     if value == '':
-    #         continue
-    #     if key == 'vlan_name':
-    #         vlan_names.append(value)
-    #     if key == 'vlan_number':
-    #         vlan_numbers.append(value)
-    #
-    #
-    # print(vlan_numbers)
-    # print(vlan_names)
-    # a = VlanOnDevice(number=new.get('vlan_number'), name=new.get('vlan_name'))
-
-    # print(a)
-    # VlanOnInterface
-    # ip_address =
-    # a = CreateConfiguration(ip_address=new.get('ip_address'), hostname=new.get('hostname'))
-    # print(a)
+    obj = {k: v for k, v in data.items() if v not in ("", "-")}
+    vlans = [VlanOnDevice(number=obj.get("vlan_number"), name=obj.get("vlan_name"))]
+    interfaces = [
+        Interface(
+            interface=obj.get("interface"),
+            address=obj.get("address"),
+            subnet_mask=obj.get("subnet_mask"),
+            status=obj.get("status"),
+            vlan=None,
+        )
+    ]
+    routing = Routing(
+        static=[
+            StaticRoutes(
+                destination=obj.get("destination"),
+                subnet_mask=obj.get("subnet_mask_dst"),
+                next_hop=obj.get("next_hop"),
+            )
+        ],
+        ospf=OSPF(
+            router_id=obj.get("OSPF"),
+            networks=[
+                NetworkByArea(
+                    network=obj.get("network"),
+                    subnet_mask=obj.get("subnet_mask_ospf"),
+                    area=obj.get("area"),
+                )
+            ],
+        ),
+    )
+    config = DeviceConfigurationData(
+        configuration=DeviceConfiguration(
+            hostname=data.get("hostname"),
+            vlans=vlans,
+            interfaces=interfaces,
+            routing=routing,
+        )
+    )
+    try:
+        await configure_device(data.get("hostname"), config)
+    except Exception as err:
+        message = err
     return templates.TemplateResponse(
         name="configure.html",
-        context={"request": request, "subnet_masks": subnet_masks_with_prefix()},
+        context={
+            "request": request,
+            "subnet_masks": subnet_masks_with_prefix(),
+            "message": message,
+        },
     )

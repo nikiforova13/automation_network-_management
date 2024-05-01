@@ -66,7 +66,8 @@
                         <td><input type="text" id="interface" name="interface"><br><br></td>
                         <td><input type="text" id="ip_address" name="address"
                                    placeholder="example: 10.12.1.1"><br><br></td>
-                        <td><select name="Subnet mask" id="subnet_mask">
+                        <td><select name="subnet_mask" id="subnet_mask">
+                            <option value="-">-</option>
                             {% for mask in subnet_masks %}
                             <option value="{{ mask }}">{{ mask }}</option>
                             {% endfor %}</select><br><br></td>
@@ -78,6 +79,7 @@
                             <input type="text" id="int_vlan_number" name="int_vlan_number" placeholder="number"><br><br>
                             <label for="mode">mode:</label>
                             <select name="int_vlan_mode" id="mode">
+                                <option value="-">-</option>
                                 <option value="access">access</option>
                                 <option value="trunk">trunk</option>
                             </select><br><br>
@@ -98,7 +100,8 @@
                     </tr>
                     <tr>
                         <td><input type="text" name="destination" placeholder="example: 10.10.1.0"></td>
-                        <td><select name="Subnet mask" id="dst_subnet_mask">
+                        <td><select name="subnet_mask_dst" id="dst_subnet_mask">
+                            <option value="-">-</option>
                             {% for mask in subnet_masks %}
                             <option value="{{ mask }}">{{ mask }}</option>
                             {% endfor %}</select><br><br></td>
@@ -121,7 +124,8 @@
                     </tr>
                     <tr>
                         <td><input type="text" name="network" placeholder="example: 10.10.1.0"></td>
-                        <td><select name="Subnet mask" id="subnet_mask_network">
+                        <td><select name="subnet_mask_ospf" id="subnet_mask_network">
+                            <option value="-">-</option>
                             {% for mask in subnet_masks %}
                             <option value="{{ mask }}">{{ mask }}</option>
                             {% endfor %}</select><br><br></td>
@@ -136,6 +140,12 @@
     <br>
     <input type="submit" value="Configure">
 </form>
+
+{% if message %}
+<h3 style="color: red;">{{ message }}</h3>
+{% else %}
+<h3 style="color: green;">Operation is successful</h3>
+{% endif %}
 
 <script>
     function addRow(tableId) {
