@@ -24,9 +24,10 @@ async def get_configuration(
     request: Request,
     hostname: typing.Annotated[str | None, Query()] = None,
 ):
-    config = None
+    config = ""
     if hostname:
-        config = await get_device_configuration()
+        config = await get_device_configuration(hostname)
+    print(config)
     return templates.TemplateResponse(
         name="device.html",
         context={"request": request, "configurations": config},

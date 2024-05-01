@@ -24,6 +24,10 @@
         td:first-child {
             font-weight: bold;
         }
+
+        .first-column-header {
+            width: 25%;
+        }
     </style>
 </head>
 <body>
@@ -40,26 +44,33 @@
 <table>
     {%- if config == 'vlans' -%}
     <tr>
-        <th>Vlans</th>
+        <th class="first-column-header">Vlans</th>
         <td>
             <table>
                 <tr>
                     <th>Number</th>
                     <th>Name</th>
                 </tr>
+                {% if values%}
                 {%- for value in values -%}
                 <tr>
-                    <td>{{ value.number or '-' }}</td>
-                    <td>{{ value.name or '-' }}</td>
+                    <td>{{ value.number }}</td>
+                    <td>{{ value.name }}</td>
                 </tr>
                 {%- endfor -%}
+                {% else %}
+                <tr>
+                    <td>{{ '-' }}</td>
+                    <td>{{ '-' }}</td>
+                </tr>
+                {% endif %}
             </table>
         </td>
     </tr>
     {%- endif -%}
     {%- if config == 'interfaces' -%}
     <tr>
-        <th>Interfaces</th>
+        <th class="first-column-header">Interfaces</th>
         <td>
             <table>
                 <tr>
@@ -88,7 +99,7 @@
     {%- endif -%}
     {%- if config == 'routing' -%}
     <tr>
-        <th>Routing</th>
+        <th class="first-column-header">Routing Static</th>
         <td>
             <table>
                 <tr>
@@ -96,13 +107,51 @@
                     <th>Subnet Mask</th>
                     <th>Next Hop</th>
                 </tr>
+                {% if values.static %}
                 {%- for v in values.static -%}
                 <tr>
-                    <td>{{ v.destination or '-' }}</td>
-                    <td>{{ v.subnet_mask or '-' }}</td>
-                    <td>{{ v.next_hop or '-' }}</td>
+                    <td>{{ v.destination }}</td>
+                    <td>{{ v.subnet_mask }}</td>
+                    <td>{{ v.next_hop }}</td>
                 </tr>
                 {%- endfor -%}
+                {% else %}
+                <tr>
+                    <td>{{ '-' }}</td>
+                    <td>{{ '-' }}</td>
+                    <td>{{ '-' }}</td>
+                </tr>
+                {% endif %}
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <th class="first-column-header">Routing OSPF</th>
+        <td>
+            <table>
+                <tr>
+                    <th>Network</th>
+                    <th>Subnet Mask</th>
+                    <th>Area</th>
+                    <th>Router-id</th>
+                </tr>
+                {% if values.ospf %}
+                {%- for net in values.ospf.networks -%}
+                <tr>
+                    <td>{{ net.network or '-' }}</td>
+                    <td>{{ net.subnet_mask or '-' }}</td>
+                    <td>{{ net.area }}</td>
+                    <td>{{ values.ospf.router_id or '-' }}</td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td>{{ '-' }}</td>
+                    <td>{{ '-' }}</td>
+                    <td>{{ '-' }}</td>
+                    <td>{{ '-' }}</td>
+                </tr>
+                {% endif %}
             </table>
         </td>
     </tr>

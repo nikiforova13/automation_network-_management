@@ -43,7 +43,8 @@ async def get_device_configuration(
                 detail=f"Команда {command} не была успешно обработана на устройстве",
             )
         logger.info("The configuration has been successfully received")
-        return await _parse_config(config=data)
+        config = await _parse_config(config=data)
+        return DeviceConfigurationData(**config).model_dump()
 
 
 async def configure_device(
