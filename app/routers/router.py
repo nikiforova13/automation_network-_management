@@ -2,9 +2,13 @@ from fastapi import APIRouter
 from app.dependencies.configurations_device import (
     get_device_configuration,
     configure_device,
+    configure_devices,
 )
 from app.enums import configurations
-from app.routers.api_schemas.configuration import DeviceConfigurationData
+from app.routers.api_schemas.configuration import (
+    DeviceConfigurationData,
+    BatchDeviceConfigurationData,
+)
 from fastapi.responses import Response
 
 router = APIRouter(prefix="/configuration", tags=["Device Configuration"])
@@ -34,3 +38,13 @@ async def delete_configuration(
     hostname: str, params: DeviceConfigurationData
 ) -> Response:
     return await configure_device(hostname, params, action=configurations.Action.delete)
+
+
+@router.post("/devices")
+async def batch_create_configuration(params: BatchDeviceConfigurationData) -> Response:
+    return await configure_devices(params)
+
+
+@router.delete("/devices")
+async def batch_delete_configuration(params: BatchDeviceConfigurationData) -> Response:
+    return await configure_devices(params, action=configurations.Action.delete)

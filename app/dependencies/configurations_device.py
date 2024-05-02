@@ -3,7 +3,10 @@ from scrapli import Scrapli
 
 from app.config.driver import driver, device
 from app.config.device_config import path_config_parse, template
-from app.routers.api_schemas.configuration import DeviceConfigurationData
+from app.routers.api_schemas.configuration import (
+    DeviceConfigurationData,
+    BatchDeviceConfigurationData,
+)
 from app.enums import commands, configurations
 from scrapli.response import Response as ScrapliResponse
 from fastapi.exceptions import ResponseValidationError, HTTPException
@@ -69,9 +72,11 @@ async def configure_device(
         return Response(status_code=200, content="Successful Response")
 
 
-def subnet_masks_with_prefix():
-    subnet_masks = []
-    for prefix_length in range(33):
-        network = ipaddress.IPv4Network(("0.0.0.0", prefix_length), strict=False)
-        subnet_masks.append(f"{str(network.netmask)}")
-    return subnet_masks
+async def configure_devices(
+    params: BatchDeviceConfigurationData,
+    action: configurations.Action | None = configurations.Action.create,
+):
+    for param in params.configurations:
+        await configure_device(
+            hostname=param.configuration.hostname, params=param, action=action
+        )

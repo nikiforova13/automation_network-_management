@@ -1,14 +1,9 @@
 import typing
-
 from fastapi.responses import HTMLResponse
 from fastapi.requests import Request
-from fastapi import APIRouter, Depends, Form, Query
-
-from app.routers.router import get_configuration
-
+from fastapi import APIRouter, Query
 from app.dependencies.configurations_device import (
     get_device_configuration,
-    subnet_masks_with_prefix,
     configure_device,
 )
 from app.config.device_config import templates
@@ -19,6 +14,7 @@ from app.routers.api_schemas.configuration import (
 )
 from app.models.interfaces import Interface
 from app.models.routing import Routing, StaticRoutes, OSPF, NetworkByArea
+from app.dependencies.tools import subnet_masks
 
 router = APIRouter(prefix="/ui/configuration", tags=["Ui-stub"])
 
@@ -41,7 +37,7 @@ async def get_configuration(
 async def create_configuration(request: Request):
     return templates.TemplateResponse(
         name="configure.html",
-        context={"request": request, "subnet_masks": subnet_masks_with_prefix()},
+        context={"request": request, "subnet_masks": subnet_masks()},
     )
 
 
@@ -94,7 +90,7 @@ async def create_configuration(request: Request):
         name="configure.html",
         context={
             "request": request,
-            "subnet_masks": subnet_masks_with_prefix(),
+            "subnet_masks": subnet_masks(),
             "message": message,
         },
     )
