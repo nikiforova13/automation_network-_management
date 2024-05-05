@@ -8,6 +8,7 @@ from app.enums import configurations
 from app.routers.api_schemas.configuration import (
     DeviceConfigurationData,
     BatchDeviceConfigurationData,
+    BatchSearchDevice,
 )
 from fastapi.responses import Response
 
@@ -38,6 +39,16 @@ async def delete_configuration(
     hostname: str, params: DeviceConfigurationData
 ) -> Response:
     return await configure_device(hostname, params, action=configurations.Action.delete)
+
+
+# @router.get("/devices")
+# async def batch_configuration(params: BatchSearchDevice) -> Response:
+#     return await get_device_configuration(params)
+
+
+@router.patch("/devices")
+async def batch_update_configuration(params: BatchDeviceConfigurationData) -> Response:
+    return await configure_devices(params)
 
 
 @router.post("/devices")

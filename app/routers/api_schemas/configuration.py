@@ -20,3 +20,10 @@ class DeviceConfigurationData(BaseModel, BaseCase):
 
 class BatchDeviceConfigurationData(BaseModel, BaseCase):
     configurations: list[DeviceConfigurationData]
+
+
+class BatchSearchDevice(BaseModel, BaseCase):
+    country: str | None = None
+    city: str | None = None
+    tag: str | None = None
+    type_device: str | None = None
