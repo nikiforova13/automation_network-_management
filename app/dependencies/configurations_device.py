@@ -69,7 +69,7 @@ async def configure_device(
                 detail=f"Во время конфигурации устройства произошла ошибка {res}",
             )
         logger.info(f"The device {hostname} has been successfully configured")
-        return Response(status_code=201, content="Successful Response")
+        return Response(status_code=201, content="Created")
 
 
 async def configure_devices(
