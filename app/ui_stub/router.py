@@ -12,7 +12,7 @@ from app.dependencies.configurations_device import (
 from app.dependencies.tools import subnet_masks
 from app.models.interfaces import Interface
 from app.models.routing import OSPF, NetworkByArea, Routing, StaticRoutes
-from app.models.vlan import VlanOnDevice
+from app.models.vlan import VlanOnDevice, VlanOnInterface
 from app.routers.api_schemas.configuration import (
     DeviceConfiguration,
     DeviceConfigurationData,
@@ -47,7 +47,11 @@ async def create_configuration(request: Request):
 async def create_configuration(request: Request):
     data = await request.form()
     obj = {k: v for k, v in data.items() if v not in ("", "-")}
-    vlans = [VlanOnDevice(number=obj.get("vlan_number"), name=obj.get("vlan_name"))]
+    vlans_on_device = [
+        VlanOnDevice(number=obj.get("vlan_number"), name=obj.get("vlan_name"))
+    ]
+    # vlans_on_interface = [VlanOnInterface(number=obj.get("vlan_number"), mode=obj.get("vlan_mode"))]
+
     interfaces = [
         Interface(
             interface=obj.get("interface"),
@@ -79,7 +83,7 @@ async def create_configuration(request: Request):
     config = DeviceConfigurationData(
         configuration=DeviceConfiguration(
             hostname=data.get("hostname"),
-            vlans=vlans,
+            vlans=vlans_on_device,
             interfaces=interfaces,
             routing=routing,
         )
