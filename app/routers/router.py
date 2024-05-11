@@ -8,7 +8,6 @@ from app.enums import configurations
 from app.routers.api_schemas.configuration import (
     DeviceConfigurationData,
     BatchDeviceConfigurationData,
-    BatchSearchDevice,
 )
 from fastapi.responses import Response
 

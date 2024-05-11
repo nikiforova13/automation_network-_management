@@ -9,7 +9,7 @@ def is_ip_network(v: str):
     try:
         IPv4Network(v)
     except ValueError as err:
-        ...
+        raise err
     else:
         return v
 
@@ -18,7 +18,7 @@ def is_ip_address(v: str):
     try:
         IPv4Address(v)
     except ValueError as err:
-        ...
+        raise err
     else:
         return v
 

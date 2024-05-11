@@ -1,5 +1,4 @@
-from pydantic import BaseModel, ConfigDict
-from ipaddress import IPv4Address, IPv4Network
+from pydantic import BaseModel
 
 from app.models.interfaces import Interface
 from app.models.routing import Routing

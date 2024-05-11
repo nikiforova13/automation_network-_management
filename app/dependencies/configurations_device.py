@@ -1,4 +1,3 @@
-import ipaddress
 from scrapli import Scrapli
 
 from app.config.driver import driver, device
@@ -9,7 +8,7 @@ from app.routers.api_schemas.configuration import (
 )
 from app.enums import commands, configurations
 from scrapli.response import Response as ScrapliResponse
-from fastapi.exceptions import ResponseValidationError, HTTPException
+from fastapi.exceptions import HTTPException
 from fastapi.responses import Response
 from app.logger import logger
 
@@ -40,7 +39,7 @@ async def get_device_configuration(
         if data.failed:
             raise HTTPException(
                 status_code=503,
-                detail=f"Команда {command} не была успешно обработана на устройстве",
+                detail=f"Команда {command} не была успешно обработана на устройстве {data}.",
             )
         logger.info("The configuration has been successfully received")
         config = await _parse_config(config=data)
