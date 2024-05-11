@@ -8,7 +8,9 @@ from app.config.driver import device, driver
 from app.enums import commands, configurations
 from app.logger import logger
 from app.routers.api_schemas.configuration import (
-    BatchDeviceConfigurationData, DeviceConfigurationData)
+    BatchDeviceConfigurationData,
+    DeviceConfigurationData,
+)
 
 
 async def _parse_config(config: ScrapliResponse):

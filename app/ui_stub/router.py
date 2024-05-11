@@ -5,14 +5,18 @@ from fastapi.requests import Request
 from fastapi.responses import HTMLResponse
 
 from app.config.device_config import templates
-from app.dependencies.configurations_device import (configure_device,
-                                                    get_device_configuration)
+from app.dependencies.configurations_device import (
+    configure_device,
+    get_device_configuration,
+)
 from app.dependencies.tools import subnet_masks
 from app.models.interfaces import Interface
 from app.models.routing import OSPF, NetworkByArea, Routing, StaticRoutes
 from app.models.vlan import VlanOnDevice
-from app.routers.api_schemas.configuration import (DeviceConfiguration,
-                                                   DeviceConfigurationData)
+from app.routers.api_schemas.configuration import (
+    DeviceConfiguration,
+    DeviceConfigurationData,
+)
 
 router = APIRouter(prefix="/ui/configuration", tags=["Ui-stub"])
 
