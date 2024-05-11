@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+
 from app.routers.api_schemas.base import BaseCase
 
 

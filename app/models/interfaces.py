@@ -1,5 +1,6 @@
-from pydantic import BaseModel
 from ipaddress import IPv4Address, IPv4Network
+
+from pydantic import BaseModel
 
 from app.models.vlan import VlanOnInterface
 from app.routers.api_schemas.base import BaseCase

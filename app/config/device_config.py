@@ -1,7 +1,7 @@
 import pathlib
 
-from jinja2 import Environment, FileSystemLoader
 from fastapi.templating import Jinja2Templates
+from jinja2 import Environment, FileSystemLoader
 
 path_config_parse = (
     pathlib.Path(__file__)

@@ -1,8 +1,10 @@
-from pydantic import Field, field_validator, ValidationError
-from pydantic_settings import BaseSettings, SettingsConfigDict
 from ipaddress import IPv4Address
-from typing import Literal, Any
-from app.config.base import get_updated_model_config, BASE_CONFIG
+from typing import Any, Literal
+
+from pydantic import Field, ValidationError, field_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+from app.config.base import BASE_CONFIG, get_updated_model_config
 
 
 class BaseNetworkDriverSettings(BaseSettings):

@@ -1,16 +1,14 @@
-from scrapli import Scrapli
-
-from app.config.driver import driver, device
-from app.config.device_config import path_config_parse, template
-from app.routers.api_schemas.configuration import (
-    DeviceConfigurationData,
-    BatchDeviceConfigurationData,
-)
-from app.enums import commands, configurations
-from scrapli.response import Response as ScrapliResponse
 from fastapi.exceptions import HTTPException
 from fastapi.responses import Response
+from scrapli import Scrapli
+from scrapli.response import Response as ScrapliResponse
+
+from app.config.device_config import path_config_parse, template
+from app.config.driver import device, driver
+from app.enums import commands, configurations
 from app.logger import logger
+from app.routers.api_schemas.configuration import (
+    BatchDeviceConfigurationData, DeviceConfigurationData)
 
 
 async def _parse_config(config: ScrapliResponse):

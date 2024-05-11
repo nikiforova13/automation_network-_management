@@ -1,8 +1,9 @@
-from pydantic import BaseModel
-from ipaddress import IPv4Address, IPv4Network
-from app.routers.api_schemas.base import BaseCase
-from pydantic import BeforeValidator
 import typing
+from ipaddress import IPv4Address, IPv4Network
+
+from pydantic import BaseModel, BeforeValidator
+
+from app.routers.api_schemas.base import BaseCase
 
 
 def is_ip_network(v: str):

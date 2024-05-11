@@ -1,9 +1,8 @@
 import pathlib
 
-from fastapi.responses import HTMLResponse
-from fastapi.requests import Request
 from fastapi import APIRouter
-
+from fastapi.requests import Request
+from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
 APP_GLOBAL_PATH = pathlib.Path(__file__).absolute().parent.parent.joinpath("templates")

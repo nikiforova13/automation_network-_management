@@ -1,5 +1,6 @@
-from pydantic_settings import SettingsConfigDict
 import pathlib
+
+from pydantic_settings import SettingsConfigDict
 
 APP_GLOBAL_PATH = pathlib.Path(__file__).absolute().parent.parent
 BASE_CONFIG: SettingsConfigDict = SettingsConfigDict(

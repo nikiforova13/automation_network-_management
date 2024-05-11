@@ -1,15 +1,12 @@
 from fastapi import APIRouter
-from app.dependencies.configurations_device import (
-    get_device_configuration,
-    configure_device,
-    configure_devices,
-)
+from fastapi.responses import Response
+
+from app.dependencies.configurations_device import (configure_device,
+                                                    configure_devices,
+                                                    get_device_configuration)
 from app.enums import configurations
 from app.routers.api_schemas.configuration import (
-    DeviceConfigurationData,
-    BatchDeviceConfigurationData,
-)
-from fastapi.responses import Response
+    BatchDeviceConfigurationData, DeviceConfigurationData)
 
 router = APIRouter(prefix="/configuration", tags=["Device Configuration"])
 
