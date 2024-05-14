@@ -6,7 +6,7 @@
 {%- endif -%}
 {%- if routing.ospf -%}
 {% for route in routing.ospf.networks %}
-{%- if route -%}
+{% if route %}
 router ospf 1
 network {{ route.network }} {{ route.subnet_mask }} area {{ route.area }}
 {%- endif -%}

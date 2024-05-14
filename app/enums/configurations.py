@@ -1,6 +1,6 @@
 from enum import StrEnum
 
 
-class Action(StrEnum):
+class ActionConfiguration(StrEnum):
     delete = "delete"
     create = "create"

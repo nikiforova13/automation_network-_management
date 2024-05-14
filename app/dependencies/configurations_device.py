@@ -11,6 +11,7 @@ from app.routers.api_schemas.configuration import (
     BatchDeviceConfigurationData,
     DeviceConfigurationData,
 )
+from app.routers.api_schemas.base import BaseAPIResponse, APIResponseStatusCode
 
 
 async def _parse_config(config: ScrapliResponse):
@@ -33,9 +34,10 @@ async def get_device_configuration(
 ) -> DeviceConfigurationData:
     if not command:
         command = commands.ShowCommandCisco.ALL_CONFIG
-    logger.info(f"Getting configurations with {hostname}")
+    logger.info(f"Connect to device: {hostname}")
     with Scrapli(**_settings_driver(hostname)) as ssh:
         data = ssh.send_command(command)
+        logger.info(f"Getting configurations with {hostname}")
         if data.failed:
             raise HTTPException(
                 status_code=503,
@@ -50,30 +52,35 @@ async def get_device_configuration(
 async def configure_device(
     hostname: str,
     params: DeviceConfigurationData,
-    action: configurations.Action | None = configurations.Action.create,
+    action: (
+        configurations.ActionConfiguration | None
+    ) = configurations.ActionConfiguration.create,
 ):
     configurations = params.configuration.model_dump(exclude_none=True)
     cmds = template.render(configurations, action=action).split("\n")
     if "" in cmds:
         cmds.remove("")
-    logger.info(f"Device {hostname} configuring {cmds}")
+    logger.info(f"Commands for configure: {cmds}")
+    logger.info(f"Connect to device: {hostname}")
     with Scrapli(**_settings_driver(hostname)) as ssh:
+        logger.info(f"Device {hostname} configuring")
         res = ssh.send_configs(
             cmds,
         )
-
         if res.failed:
             raise HTTPException(
-                status_code=503,
+                status_code=APIResponseStatusCode.nok,
                 detail=f"Во время конфигурации устройства произошла ошибка {res}",
             )
         logger.info(f"The device {hostname} has been successfully configured")
-        return Response(status_code=201, content="Created")
+        return BaseAPIResponse.get(APIResponseStatusCode.ok)
 
 
 async def configure_devices(
     params: BatchDeviceConfigurationData,
-    action: configurations.Action | None = configurations.Action.create,
+    action: (
+        configurations.ActionConfiguration | None
+    ) = configurations.ActionConfiguration.create,
 ):
     for param in params.configurations:
         await configure_device(

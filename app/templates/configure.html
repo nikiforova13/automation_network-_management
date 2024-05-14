@@ -32,8 +32,6 @@
 <form method="post">
     <label for="hostname">Hostname:</label>
     <input type="text" id="hostname" name="hostname"><br><br>
-    <label for="ip_address_device">IP address:</label>
-    <input type="text" id="ip_address_device" name="ip_address"><br><br>
     <table>
         <tr>
             <th colspan="2">Vlans</th>
@@ -140,13 +138,13 @@
     <br>
     <input type="submit" value="Configure">
 </form>
-
-{% if message %}
-<h3 style="color: red;">{{ message }}</h3>
-{% else %}
+{% if result %}
+{% if result.status_code == 201 %}
 <h3 style="color: green;">Operation is successful</h3>
+{% else %}
+<h3 style="color: red;">{{ result }}</h3>
 {% endif %}
-
+{% endif %}
 <script>
     function addRow(tableId) {
         var table = document.getElementById(tableId);

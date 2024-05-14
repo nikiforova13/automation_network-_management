@@ -48,6 +48,8 @@ class BaseNetworkDevices(BaseSettings):
     R3: str
     R4: str
     R5: str
+    SW1: str
+    SW2: str
 
     @property
     def _devices(self):
@@ -56,3 +58,13 @@ class BaseNetworkDevices(BaseSettings):
 
 driver = BaseNetworkDriverSettings()
 device = BaseNetworkDevices()
+
+
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(
+        get_updated_model_config(BASE_CONFIG, SettingsConfigDict(extra="ignore"))
+    )
+    DSN: str
+
+
+settings = Settings()
