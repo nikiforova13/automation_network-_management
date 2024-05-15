@@ -58,7 +58,7 @@ async def configure_device(
 ):
     configurations = params.configuration.model_dump(exclude_none=True)
     cmds = template.render(configurations, action=action).split("\n")
-    cmds = dict.fromkeys(cmds)
+    cmds = list(dict.fromkeys(cmds))
     if "" in cmds:
         cmds = [cmd for cmd in cmds if cmd != ""]
     logger.info(f"Commands for configure: {cmds}")
@@ -87,6 +87,10 @@ async def configure_devices(
     ) = configurations.ActionConfiguration.create,
 ):
     for param in params.configurations:
-        await configure_device(
-            hostname=param.configuration.hostname, params=param, action=action
-        )
+        hostname = param.configuration.hostname
+        param.configuration.model_dump().pop("hostname")
+        await configure_device(hostname=hostname, params=param, action=action)
+    return JSONResponse(
+        status_code=APIResponseStatusCode.created,
+        content=BaseAPIResponse.get(APIResponseStatusCode.created),
+    )
