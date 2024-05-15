@@ -58,8 +58,9 @@ async def configure_device(
 ):
     configurations = params.configuration.model_dump(exclude_none=True)
     cmds = template.render(configurations, action=action).split("\n")
+    cmds = dict.fromkeys(cmds)
     if "" in cmds:
-        cmds.remove("")
+        cmds = [cmd for cmd in cmds if cmd != '']
     logger.info(f"Commands for configure: {cmds}")
     logger.info(f"Connect to device: {hostname}")
     with Scrapli(**_settings_driver(hostname)) as ssh:
