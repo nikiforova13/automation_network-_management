@@ -60,7 +60,7 @@ async def configure_device(
     cmds = template.render(configurations, action=action).split("\n")
     cmds = dict.fromkeys(cmds)
     if "" in cmds:
-        cmds = [cmd for cmd in cmds if cmd != '']
+        cmds = [cmd for cmd in cmds if cmd != ""]
     logger.info(f"Commands for configure: {cmds}")
     logger.info(f"Connect to device: {hostname}")
     with Scrapli(**_settings_driver(hostname)) as ssh:
@@ -74,7 +74,10 @@ async def configure_device(
                 detail=f"Во время конфигурации устройства произошла ошибка {res}",
             )
         logger.info(f"The device {hostname} has been successfully configured")
-        return JSONResponse(status_code=APIResponseStatusCode.created, content=BaseAPIResponse.get(APIResponseStatusCode.created))
+        return JSONResponse(
+            status_code=APIResponseStatusCode.created,
+            content=BaseAPIResponse.get(APIResponseStatusCode.created),
+        )
 
 
 async def configure_devices(

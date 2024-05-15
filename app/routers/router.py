@@ -25,6 +25,7 @@ async def get_configuration(hostname: str) -> DeviceConfigurationData:
 async def create_configuration(
     hostname: str, params: DeviceConfigurationData
 ) -> Response:
+    print("999999999")
     return await configure_device(hostname, params)
 
 
@@ -39,7 +40,9 @@ async def update_configuration(
 async def delete_configuration(
     hostname: str, params: DeviceConfigurationData
 ) -> Response:
-    return await configure_device(hostname, params, action=configurations.ActionConfiguration.delete)
+    return await configure_device(
+        hostname, params, action=configurations.ActionConfiguration.delete
+    )
 
 
 # @router.get("/devices")
@@ -47,16 +50,19 @@ async def delete_configuration(
 #     return await get_device_configuration(params)
 
 
-@router.patch("/devices", responses=BaseAPIResponse)
+@router.patch("/batch/devices", responses=BaseAPIResponse)
 async def batch_update_configuration(params: BatchDeviceConfigurationData) -> Response:
     return await configure_devices(params)
 
 
-@router.post("/devices", responses=BaseAPIResponse)
+@router.post("/batch/devices", responses=BaseAPIResponse)
 async def batch_create_configuration(params: BatchDeviceConfigurationData) -> Response:
+    print("ffffffff8888")
     return await configure_devices(params)
 
 
-@router.delete("/devices", responses=BaseAPIResponse)
+@router.delete("/batch/devices", responses=BaseAPIResponse)
 async def batch_delete_configuration(params: BatchDeviceConfigurationData) -> Response:
-    return await configure_devices(params, action=configurations.ActionConfiguration.delete)
+    return await configure_devices(
+        params, action=configurations.ActionConfiguration.delete
+    )
