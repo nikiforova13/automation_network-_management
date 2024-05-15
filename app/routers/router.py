@@ -25,7 +25,6 @@ async def get_configuration(hostname: str) -> DeviceConfigurationData:
 async def create_configuration(
     hostname: str, params: DeviceConfigurationData
 ) -> Response:
-    print("999999999")
     return await configure_device(hostname, params)
 
 
@@ -57,7 +56,6 @@ async def batch_update_configuration(params: BatchDeviceConfigurationData) -> Re
 
 @router.post("/batch/devices", responses=BaseAPIResponse)
 async def batch_create_configuration(params: BatchDeviceConfigurationData) -> Response:
-    print("ffffffff8888")
     return await configure_devices(params)
 
 
