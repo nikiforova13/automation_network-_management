@@ -57,6 +57,7 @@ async def configure_device(
     ) = configurations.ActionConfiguration.create,
 ):
     configurations = params.configuration.model_dump(exclude_none=True)
+    configurations.pop("hostname")
     cmds = template.render(configurations, action=action).split("\n")
     cmds = list(dict.fromkeys(cmds))
     if "" in cmds:
@@ -88,7 +89,6 @@ async def configure_devices(
 ):
     for param in params.configurations:
         hostname = param.configuration.hostname
-        param.configuration.model_dump().pop("hostname")
         await configure_device(hostname=hostname, params=param, action=action)
     return JSONResponse(
         status_code=APIResponseStatusCode.created,
