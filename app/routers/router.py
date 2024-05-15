@@ -39,9 +39,7 @@ async def update_configuration(
 async def delete_configuration(
     hostname: str, params: DeviceConfigurationData
 ) -> Response:
-    return await configure_device(
-        hostname, params, action=configurations.ActionConfiguration.delete
-    )
+    return await configure_device(hostname, params, action=configurations.ActionConfiguration.delete)
 
 
 # @router.get("/devices")
@@ -61,6 +59,4 @@ async def batch_create_configuration(params: BatchDeviceConfigurationData) -> Re
 
 @router.delete("/devices", responses=BaseAPIResponse)
 async def batch_delete_configuration(params: BatchDeviceConfigurationData) -> Response:
-    return await configure_devices(
-        params, action=configurations.ActionConfiguration.delete
-    )
+    return await configure_devices(params, action=configurations.ActionConfiguration.delete)

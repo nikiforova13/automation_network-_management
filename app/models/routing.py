@@ -42,5 +42,5 @@ class OSPF(BaseModel, BaseCase):
 
 
 class Routing(BaseModel, BaseCase):
-    static: list[StaticRoutes] | None = None
+    static: list[StaticRoutes] | StaticRoutes | None = None
     ospf: OSPF | None = None

@@ -7,11 +7,15 @@
 {%- if routing.ospf -%}
 {% for route in routing.ospf.networks %}
 {% if route %}
-router ospf 1
+{{cmd}}router ospf 1
+{% if not cmd %}
 network {{ route.network }} {{ route.subnet_mask }} area {{ route.area }}
+{%- endif -%}
 {%- endif -%}
 {%- endfor -%}
 {% if routing.ospf.router_id %}
+{% if not cmd %}
 router-id {{ routing.ospf.router_id }}
+{%- endif -%}
 {%- endif -%}
 {%- endif -%}

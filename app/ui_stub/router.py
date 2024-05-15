@@ -47,11 +47,10 @@ async def create_configuration(request: Request):
 async def create_configuration(request: Request):
     data = await request.form()
     obj = {k: v for k, v in data.items() if v not in ("", "-")}
-    print(f"ffff {obj}")
     vlans_on_device = [
         VlanOnDevice(number=obj.get("vlan_number"), name=obj.get("vlan_name"))
     ]
-    vlans_on_interface = [VlanOnInterface(number=10, mode="access")]
+    # vlans_on_interface = [VlanOnInterface(number=10, mode="access")]
 
     interfaces = [
         Interface(
@@ -59,7 +58,7 @@ async def create_configuration(request: Request):
             address=obj.get("address"),
             subnet_mask=obj.get("subnet_mask"),
             status=obj.get("status"),
-            vlan=vlans_on_interface,
+            vlan=None,
         )
     ]
     routing = Routing(

@@ -1,5 +1,5 @@
 from fastapi.exceptions import HTTPException
-from fastapi.responses import Response
+from fastapi.responses import JSONResponse
 from scrapli import Scrapli
 from scrapli.response import Response as ScrapliResponse
 
@@ -73,7 +73,7 @@ async def configure_device(
                 detail=f"Во время конфигурации устройства произошла ошибка {res}",
             )
         logger.info(f"The device {hostname} has been successfully configured")
-        return BaseAPIResponse.get(APIResponseStatusCode.ok)
+        return JSONResponse(status_code=APIResponseStatusCode.created, content=BaseAPIResponse.get(APIResponseStatusCode.created))
 
 
 async def configure_devices(
