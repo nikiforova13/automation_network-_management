@@ -18,7 +18,7 @@ class DeviceConfigurationData(BaseModel, BaseCase):
 
 
 class BatchDeviceConfigurationData(BaseModel, BaseCase):
-    configurations: DeviceConfigurationData
+    configurations: list[DeviceConfigurationData]
 
 
 class BatchSearchDevice(BaseModel, BaseCase):
