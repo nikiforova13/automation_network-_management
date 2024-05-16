@@ -36,6 +36,7 @@ async def get_device_configuration(
 ) -> DeviceConfigurationData:
     if not command:
         command = commands.ShowCommandCisco.ALL_CONFIG
+    date_start = datetime.datetime.now()
     logger.info(f"Connect to device: {hostname}")
     with Scrapli(**_settings_driver(hostname)) as ssh:
         data = ssh.send_command(command)
@@ -47,6 +48,8 @@ async def get_device_configuration(
             )
         logger.info("The configuration has been successfully received")
         config = await _parse_config(config=data)
+        date_end = datetime.datetime.now()
+        logger.info(f"The time when the device configuration was received {date_end - date_start}")
 
         return DeviceConfigurationData(**config).model_dump()
 
