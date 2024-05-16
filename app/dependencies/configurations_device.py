@@ -1,3 +1,5 @@
+import datetime
+
 from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
 from scrapli import Scrapli
@@ -57,7 +59,8 @@ async def configure_device(
     ) = configurations.ActionConfiguration.create,
 ):
     configurations = params.configuration.model_dump(exclude_none=True)
-    configurations.pop("hostname")
+    if "hostname" in configurations:
+        configurations.pop("hostname")
     cmds = template.render(configurations, action=action).split("\n")
     cmds = list(dict.fromkeys(cmds))
     if "" in cmds:
@@ -87,9 +90,16 @@ async def configure_devices(
         configurations.ActionConfiguration | None
     ) = configurations.ActionConfiguration.create,
 ):
+    devices = []
+    date_start = datetime.datetime.now()
     for param in params.configurations:
         hostname = param.configuration.hostname
+        devices.append(hostname)
         await configure_device(hostname=hostname, params=param, action=action)
+    date_end = datetime.datetime.now()
+
+    logger.info(f"The following devices have been successfully configured {devices}")
+    logger.info(f"Device setup time {date_end - date_start}")
     return JSONResponse(
         status_code=APIResponseStatusCode.created,
         content=BaseAPIResponse.get(APIResponseStatusCode.created),
