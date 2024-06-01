@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Configuration</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        td:first-child {
+            font-weight: bold;
+        }
+
+        .first-column-header {
+            width: 25%;
+        }
+    </style>
+</head>
+<body>
+<h3>Интерфейс для получения конфигурации устройства</h3>
+<form>
+    <label for="hostname">Hostname:</label>
+    <input type="text" id="hostname" name="hostname"><br><br>
+    <input type="submit" value="Получить конфиг">
+</form>
+
+{%- if configurations -%}
+<h3>Network Configuration {{ configurations.configuration.hostname }}</h3>
+{% for config, values in configurations.configuration.items() %}
+<table>
+    {%- if config == 'vlans' -%}
+    <tr>
+        <th class="first-column-header">Vlans</th>
+        <td>
+            <table>
+                <tr>
+                    <th>Number</th>
+                    <th>Name</th>
+                </tr>
+                {% if values%}
+                {%- for value in values -%}
+                <tr>
+                    <td>{{ value.number }}</td>
+                    <td>{{ value.name }}</td>
+                </tr>
+                {%- endfor -%}
+                {% else %}
+                <tr>
+                    <td>{{ '-' }}</td>
+                    <td>{{ '-' }}</td>
+                </tr>
+                {% endif %}
+            </table>
+        </td>
+    </tr>
+    {%- endif -%}
+    {%- if config == 'interfaces' -%}
+    <tr>
+        <th class="first-column-header">Interfaces</th>
+        <td>
+            <table>
+                <tr>
+                    <th>Interface</th>
+                    <th>IP Address</th>
+                    <th>Subnet Mask</th>
+                    <th>Status</th>
+                    <th>Vlan</th>
+                </tr>
+                {%- for value in values -%}
+                <tr>
+                    <td>{{ value.interface or '-' }}</td>
+                    <td>{{ value.address or '-' }}</td>
+                    <td>{{ value.subnet_mask or '-' }}</td>
+                    <td>{{ value.status or '-' }}</td>
+                    {%- if value.vlan -%}
+                    <td>{{ value.vlan.number, value.vlan.mode }}</td>
+                    {% else %}
+                    <td>-</td>
+                    {% endif %}
+                </tr>
+                {%- endfor -%}
+            </table>
+        </td>
+    </tr>
+    {%- endif -%}
+    {%- if config == 'routing' -%}
+    <tr>
+        <th class="first-column-header">Routing Static</th>
+        <td>
+            <table>
+                <tr>
+                    <th>Destination</th>
+                    <th>Subnet Mask</th>
+                    <th>Next Hop</th>
+                </tr>
+                {% if values.static %}
+                {%- for v in values.static -%}
+                <tr>
+                    <td>{{ v.destination }}</td>
+                    <td>{{ v.subnet_mask }}</td>
+                    <td>{{ v.next_hop }}</td>
+                </tr>
+                {%- endfor -%}
+                {% else %}
+                <tr>
+                    <td>{{ '-' }}</td>
+                    <td>{{ '-' }}</td>
+                    <td>{{ '-' }}</td>
+                </tr>
+                {% endif %}
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <th class="first-column-header">Routing OSPF</th>
+        <td>
+            <table>
+                <tr>
+                    <th>Network</th>
+                    <th>Subnet Mask</th>
+                    <th>Area</th>
+                    <th>Router-id</th>
+                </tr>
+                {% if values.ospf %}
+                {%- for net in values.ospf.networks -%}
+                <tr>
+                    <td>{{ net.network or '-' }}</td>
+                    <td>{{ net.subnet_mask or '-' }}</td>
+                    <td>{{ net.area }}</td>
+                    <td>{{ values.ospf.router_id or '-' }}</td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td>{{ '-' }}</td>
+                    <td>{{ '-' }}</td>
+                    <td>{{ '-' }}</td>
+                    <td>{{ '-' }}</td>
+                </tr>
+                {% endif %}
+            </table>
+        </td>
+    </tr>
+    {%- endif -%}
+</table>
+{%- endfor -%}
+{%- endif -%}
+</body>
+</html>

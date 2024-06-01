@@ -1,0 +1,21 @@
+{%- set cmd="no " if action=="delete" -%}
+{%- if routing.static -%}
+{% for route in routing.static %}
+{{cmd}}ip route {{route.destination}} {{ route.subnet_mask }} {{ route.next_hop }}
+{%- endfor -%}
+{%- endif -%}
+{%- if routing.ospf -%}
+{% for route in routing.ospf.networks %}
+{% if route %}
+{{cmd}}router ospf 1
+{% if not cmd %}
+network {{ route.network }} {{ route.subnet_mask }} area {{ route.area }}
+{%- endif -%}
+{%- endif -%}
+{%- endfor -%}
+{% if routing.ospf.router_id %}
+{% if not cmd %}
+router-id {{ routing.ospf.router_id }}
+{%- endif -%}
+{%- endif -%}
+{%- endif -%}
